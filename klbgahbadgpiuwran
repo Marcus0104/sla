@@ -3,7 +3,7 @@
 const CHEQUE_ESPECIAL = 500;
 $clientes = [];
 
-function cadastar_cliente(&$clientes): bool
+function cadastrar_cliente(&$clientes): bool
 {
     $nome = readline('Informe seu nome: ');
     $cpf = readline('Informe seu CPF: ');
@@ -40,10 +40,12 @@ function cadastrar_contas(array &$clientes): bool
     ];
 
     print "Conta criada com sucesso\n";
+    print ("O númro da conta é: #$num_conta");
     return true;
 }
 
-function depositar(&$clientes){
+function depositar(&$clientes)
+{
     $cpf = readline('Informe seu CPF novamente: ');
 
     $num_conta = readline("Informe o número da conta ");
@@ -51,7 +53,7 @@ function depositar(&$clientes){
     $valor_deposito = (float)readline('Informe o valor do depósito: ');
 
     if($valor_deposito <= 0){
-        print "Valor de depósito inválido";
+        print "Valor de depósito inválido";     
     }
     $clientes[$cpf]['contas'][$num_conta]['saldo'] =+ $valor_deposito;
 
@@ -61,8 +63,22 @@ function depositar(&$clientes){
     print 'Depósito realizado com sucesso';
     return true;
 }
+function sacar(&$clientes)
+{
+    $cpf = readline("Informe seu CPF: ");
 
-function menu(){
+    
+    $conta= readline("Informe o número da sua conta: ");
+    $valor_saque = readline("Informe o valor do saque: ");  
+    
+    if ($clientes[$cpf]['contas'][$conta]['saldo'] >= $valor_saque) {
+        $clientes[$cpf]['contas'][$conta]['saldo'] -= $valor_saque;
+    }
+
+    print_r($clientes[$cpf]);
+}
+function menu()
+{
     print "\n==================== MEU BANCO EM PHP ====================
     1 - cadastrar cliente
     2 - cadastrar conta
@@ -77,15 +93,18 @@ function menu(){
 while (true) {
     menu();
     $opcao = readline();
-    switch () {
+    switch ($opcao) {
         case '1':
-            cadastrarClientes($clientes);
+            cadastrar_cliente($clientes);
         break;
         case '2':
             cadastrar_contas($clientes);
         break;
         case '3':
             depositar($clientes);
+        break;
+        case '4':
+            sacar($clientes);
         break;
         case '7':
             print "obrigado por usar nosso banco";
